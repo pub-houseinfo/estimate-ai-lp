@@ -3,6 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google Tag Manager（土台）。GTM_ID を入れるまでGTMは読み込まれない。dataLayer だけ先に動く -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  window.GTM_ID = '';   /* ← LP専用コンテナのID（GTM-XXXXXXX）をここに入れる。3ページとも同じ値にする */
+  (function(w,d,s,l,i){
+    if(!i) return;                                   /* IDが空のあいだは何も読み込まない */
+    w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=(l!='dataLayer'?'&l='+l:'');
+    j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',window.GTM_ID);
+</script>
+<!-- End Google Tag Manager -->
+
 <title>見積AIエージェント講座｜初回の見積提出を、その日のうちに。｜ハウスインフォ</title>
 <meta name="description" content="兵庫県の工務店・サブコン（設備／電気／内装）へ。答えるAIではなく、作るAIで見積を作れる人を自社に育てる12時間の講座。まず30分の無料相談から。">
 <meta property="og:title" content="初回の見積提出を、その日のうちに。｜見積AIエージェント講座">
@@ -414,6 +428,15 @@ body[data-sticky="on"] .sticky.is-visible{ transform:translateY(0); }
     new IntersectionObserver(function(es){formIn=es[0].isIntersecting;update();},{threshold:0.05}).observe(formSec);
   }
 
+  // ---------------- 計測：CTAクリックを dataLayer へ ----------------
+  // GTM側で「cta_click」をトリガーにすれば、コードを触らずタグを足せる
+  Array.prototype.forEach.call(document.querySelectorAll('a.btn[href="#form"]'),function(a){
+    a.addEventListener('click',function(){
+      var where = a.closest('#sticky') ? 'sticky' : (a.closest('.hero') ? 'hero' : 'other');
+      (window.dataLayer=window.dataLayer||[]).push({event:'cta_click', cta_location:where});
+    });
+  });
+
   // ---------------- フォーム送信（Apps Script へ fetch → 完了ページへ） ----------------
   var form=document.getElementById('consult');
   if(form){
@@ -440,13 +463,17 @@ body[data-sticky="on"] .sticky.is-visible{ transform:translateY(0); }
       fetch(endpoint,{method:'POST',body:JSON.stringify(data)})   // text/plain で送る（Apps Script のCORS要件）
         .then(function(r){ return r.json(); })
         .then(function(res){
-          if(res && res.ok){ location.href=form.getAttribute('data-thanks')||form.getAttribute('action')||'thanks.html'; return; }
+          if(res && res.ok){
+            (window.dataLayer=window.dataLayer||[]).push({event:'consult_submit'});   // 申込送信の成功
+            location.href=form.getAttribute('data-thanks')||form.getAttribute('action')||'thanks.html'; return;
+          }
           throw new Error((res && res.message)||'送信に失敗しました。');
         })
         .catch(function(err){
           btn.disabled=false; btn.innerHTML=btnHtml;
           var msg=(err && err.message)||'';
           if(!msg || err instanceof TypeError || /fetch|network|JSON|token/i.test(msg)) msg='送信に失敗しました。時間をおいて再度お試しいただくか、お電話でご連絡ください。';
+          (window.dataLayer=window.dataLayer||[]).push({event:'consult_error'});      // 送信失敗（歩留まりの把握用）
           status.textContent=msg;
         });
     });
