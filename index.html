@@ -8,6 +8,15 @@
 <meta property="og:title" content="初回の見積提出を、その日のうちに。｜見積AIエージェント講座">
 <meta property="og:description" content="答えるAIではなく、作るAIを。兵庫県の工務店・サブコンへ。見積を作れる人を自社に育てる12時間の講座です。">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://pub.houseinfo.jp/estimate-ai-lp/">
+<meta property="og:site_name" content="株式会社ハウスインフォ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://pub.houseinfo.jp/estimate-ai-lp/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="初回の見積提出を、その日のうちに。見積AIエージェント講座">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://pub.houseinfo.jp/estimate-ai-lp/">
 <meta name="robots" content="index,follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -190,6 +199,21 @@ button,input,textarea{ font:inherit; color:inherit; }
 .form .status{ margin-top:16px; font-size:14px; line-height:1.7; color:var(--bengara); min-height:1.7em; }
 .hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
 
+/* ---------- 06 プライバシーポリシー（最下部・小さく静かに） ---------- */
+.sec-privacy{ padding-top:72px; padding-bottom:72px; border-top:1px solid var(--hairline); }
+@media (min-width:768px){ .sec-privacy{ padding-top:96px; padding-bottom:96px; } }
+.sec-privacy .wrap{ max-width:840px; }
+.pp-title{ font-family:var(--jp); font-size:20px; font-weight:500; letter-spacing:.04em; line-height:1.6; color:var(--ink); margin:0 0 10px; }
+.pp-intro{ font-size:13px; line-height:1.9; color:var(--muted); margin:0 0 28px; }
+.sec-privacy dl{ margin:0; }
+.sec-privacy dt{ font-size:13px; font-weight:500; letter-spacing:.04em; color:var(--ink);
+  margin-top:20px; padding-top:20px; border-top:1px solid var(--hairline); }
+.sec-privacy dl > dt:first-of-type{ margin-top:0; padding-top:0; border-top:0; }
+.sec-privacy dd{ margin:8px 0 0; font-size:13px; line-height:1.9; color:var(--muted); }
+.sec-privacy a{ color:var(--ink); border-bottom:1px solid var(--hairline); }
+.sec-privacy a:hover{ border-color:var(--clay); }
+.pp-date{ margin:28px 0 0; font-size:12px; letter-spacing:.03em; color:var(--muted); }
+
 /* ---------- フッター ---------- */
 .footer{ background:var(--washi); color:var(--muted); padding:56px 0; font-size:12px; letter-spacing:.03em; line-height:1.8; }
 .footer .wrap{ max-width:1120px; display:grid; gap:20px; }
@@ -240,7 +264,7 @@ body[data-sticky="on"] .sticky.is-visible{ transform:translateY(0); }
       <p class="tool">ChatGPTではなく<b>Claude Code</b>で、見積を作れる人を自社に育てる12時間の講座です。</p>
     </div>
     <div class="cta">
-      <a class="btn" href="#form">30分の無料相談を申し込む <span class="arrow">→</span></a>
+      <a class="btn" href="#form">見積の無料相談（30分）を申し込む <span class="arrow">→</span></a>
       <p class="cta-note">オンラインまたは姫路市内で対面。売り込みはしません。</p>
     </div>
   </div>
@@ -318,7 +342,7 @@ body[data-sticky="on"] .sticky.is-visible{ transform:translateY(0); }
 <!-- ===== 05 フォーム（T：行動） ===== -->
 <section class="sec sec-form on-light" id="form">
   <div class="wrap">
-    <p class="eyebrow"><span>Free consultation</span><span class="sep"></span><span class="jp">30分の無料相談</span></p>
+    <p class="eyebrow"><span>Free consultation</span><span class="sep"></span><span class="jp">見積の無料相談（30分）</span></p>
     <h2 class="h2"><span class="line">まず、30分お話しさせてください。</span></h2>
     <div class="intro lines lead">
       <p>過去の見積を3件お持ちいただければ、今どれだけ時間がかかっているかをその場で測ります。</p>
@@ -359,11 +383,54 @@ body[data-sticky="on"] .sticky.is-visible{ transform:translateY(0); }
       </div>
 
       <div class="submit">
-        <button class="btn" type="submit" id="submitBtn">30分の無料相談を申し込む <span class="arrow">→</span></button>
+        <button class="btn" type="submit" id="submitBtn">見積の無料相談（30分）を申し込む <span class="arrow">→</span></button>
         <p class="status" id="formStatus" role="status" aria-live="polite"></p>
-        <p class="fine">いただいた内容は、ご相談のご連絡にのみ使います。<br>株式会社ハウスインフォ（兵庫県姫路市）</p>
+        <p class="fine">いただいた内容は、ご相談のご連絡にのみ使います。取り扱いは<a href="#privacy">プライバシーポリシー</a>をご覧ください。<br>株式会社ハウスインフォ（兵庫県姫路市）</p>
       </div>
     </form>
+  </div>
+</section>
+
+<!-- ===== 06 プライバシーポリシー（最下部） ===== -->
+<section class="sec sec-privacy on-washi" id="privacy">
+  <div class="wrap">
+    <p class="eyebrow"><span>Privacy policy</span><span class="sep"></span><span class="jp">個人情報の取り扱いについて</span></p>
+    <h2 class="pp-title">プライバシーポリシー</h2>
+    <p class="pp-intro">株式会社ハウスインフォ（以下「当社」）は、このページのフォームからお預かりする個人情報を、以下のとおり取り扱います。</p>
+    <dl>
+      <dt>1. 事業者</dt>
+      <dd>株式会社ハウスインフォ　代表取締役　福永 義正<br>
+        〒670-0955　兵庫県姫路市安田4丁目49-11　Hi2-3F<br>
+        電話 079-226-3714（9:00〜18:00／土日祝を除く）　メール <a href="mailto:info@houseinfo.jp">info@houseinfo.jp</a></dd>
+
+      <dt>2. お預かりする情報</dt>
+      <dd>このページのお申し込みフォームから、会社名・お名前・電話番号・メールアドレス・ご相談内容をお預かりします。</dd>
+
+      <dt>3. 利用目的</dt>
+      <dd>お申し込みいただいた無料相談のご連絡と実施のため、および当社の研修・サービスに関するご案内のために利用します。これ以外の目的には利用しません。</dd>
+
+      <dt>4. 第三者への提供</dt>
+      <dd>ご本人の同意なく第三者へ提供することはありません。ただし、法令に基づいて開示を求められた場合を除きます。</dd>
+
+      <dt>5. 業務の委託</dt>
+      <dd>フォームの送信・記録・メールの送受信に、Google LLC が提供するサービス（Google Apps Script・Google スプレッドシート・Gmail）を利用しています。委託先には必要な範囲でのみ情報を預け、適切に監督します。</dd>
+
+      <dt>6. Cookie などの利用</dt>
+      <dd>ページの利用状況の把握や広告の配信のために、Cookie などを利用する場合があります。Cookie からお名前などの個人を特定できる情報を取得することはありません。ブラウザの設定で Cookie を無効にできます。</dd>
+
+      <dt>7. 安全管理</dt>
+      <dd>お預かりした情報は取り扱う担当者を限定し、紛失・漏えい・改ざんを防ぐよう努めます。</dd>
+
+      <dt>8. 保管期間</dt>
+      <dd>利用目的を終え、保管の必要がなくなった時点で速やかに削除します。</dd>
+
+      <dt>9. 開示・訂正・削除のご請求</dt>
+      <dd>ご本人からのお申し出により、お預かりしている情報の開示・訂正・利用停止・削除に応じます。上記1の連絡先までご連絡ください。</dd>
+
+      <dt>10. 本ポリシーの変更</dt>
+      <dd>内容を変更する場合は、このページに掲載した時点から適用します。</dd>
+    </dl>
+    <p class="pp-date">制定日：2026年9月4日</p>
   </div>
 </section>
 
@@ -378,6 +445,7 @@ body[data-sticky="on"] .sticky.is-visible{ transform:translateY(0); }
     </div>
     <div class="links">
       <a href="https://houseinfo.jp/" target="_blank" rel="noopener">会社サイト</a>
+      <a href="#privacy">プライバシーポリシー</a>
       <a href="https://houseinfo.jp/tokushoho/" target="_blank" rel="noopener">特定商取引法に基づく表記</a>
     </div>
   </div>
@@ -385,7 +453,7 @@ body[data-sticky="on"] .sticky.is-visible{ transform:translateY(0); }
 
 <!-- ===== 追従CTA（SPのみ・1本。不要なら <body data-sticky="off"> にする） ===== -->
 <div class="sticky" id="sticky" aria-hidden="true">
-  <a class="btn" href="#form">30分の無料相談を申し込む <span class="arrow">→</span></a>
+  <a class="btn" href="#form">見積の無料相談へ <span class="arrow">→</span></a>
 </div>
 
 <!-- GSAP（cdnjs） -->
