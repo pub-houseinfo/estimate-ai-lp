@@ -196,23 +196,10 @@ button,input,textarea{ font:inherit; color:inherit; }
 .field input:focus,.field textarea:focus{ border-color:var(--ink); }
 .form .submit{ margin-top:12px; }
 .form .fine{ margin-top:18px; font-size:12px; line-height:1.7; letter-spacing:.02em; color:var(--muted); }
+.form .fine a{ color:var(--ink); border-bottom:1px solid var(--hairline); }
+.form .fine a:hover{ border-color:var(--clay); }
 .form .status{ margin-top:16px; font-size:14px; line-height:1.7; color:var(--bengara); min-height:1.7em; }
 .hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
-
-/* ---------- 06 プライバシーポリシー（最下部・小さく静かに） ---------- */
-.sec-privacy{ padding-top:72px; padding-bottom:72px; border-top:1px solid var(--hairline); }
-@media (min-width:768px){ .sec-privacy{ padding-top:96px; padding-bottom:96px; } }
-.sec-privacy .wrap{ max-width:840px; }
-.pp-title{ font-family:var(--jp); font-size:20px; font-weight:500; letter-spacing:.04em; line-height:1.6; color:var(--ink); margin:0 0 10px; }
-.pp-intro{ font-size:13px; line-height:1.9; color:var(--muted); margin:0 0 28px; }
-.sec-privacy dl{ margin:0; }
-.sec-privacy dt{ font-size:13px; font-weight:500; letter-spacing:.04em; color:var(--ink);
-  margin-top:20px; padding-top:20px; border-top:1px solid var(--hairline); }
-.sec-privacy dl > dt:first-of-type{ margin-top:0; padding-top:0; border-top:0; }
-.sec-privacy dd{ margin:8px 0 0; font-size:13px; line-height:1.9; color:var(--muted); }
-.sec-privacy a{ color:var(--ink); border-bottom:1px solid var(--hairline); }
-.sec-privacy a:hover{ border-color:var(--clay); }
-.pp-date{ margin:28px 0 0; font-size:12px; letter-spacing:.03em; color:var(--muted); }
 
 /* ---------- フッター ---------- */
 .footer{ background:var(--washi); color:var(--muted); padding:56px 0; font-size:12px; letter-spacing:.03em; line-height:1.8; }
@@ -385,52 +372,9 @@ body[data-sticky="on"] .sticky.is-visible{ transform:translateY(0); }
       <div class="submit">
         <button class="btn" type="submit" id="submitBtn">見積の無料相談（30分）を申し込む <span class="arrow">→</span></button>
         <p class="status" id="formStatus" role="status" aria-live="polite"></p>
-        <p class="fine">いただいた内容は、ご相談のご連絡にのみ使います。取り扱いは<a href="#privacy">プライバシーポリシー</a>をご覧ください。<br>株式会社ハウスインフォ（兵庫県姫路市）</p>
+        <p class="fine">いただいた内容は、ご相談のご連絡にのみ使います。取り扱いは<a href="privacy.html">プライバシーポリシー</a>をご覧ください。<br>株式会社ハウスインフォ（兵庫県姫路市）</p>
       </div>
     </form>
-  </div>
-</section>
-
-<!-- ===== 06 プライバシーポリシー（最下部） ===== -->
-<section class="sec sec-privacy on-washi" id="privacy">
-  <div class="wrap">
-    <p class="eyebrow"><span>Privacy policy</span><span class="sep"></span><span class="jp">個人情報の取り扱いについて</span></p>
-    <h2 class="pp-title">プライバシーポリシー</h2>
-    <p class="pp-intro">株式会社ハウスインフォ（以下「当社」）は、このページのフォームからお預かりする個人情報を、以下のとおり取り扱います。</p>
-    <dl>
-      <dt>1. 事業者</dt>
-      <dd>株式会社ハウスインフォ　代表取締役　福永 義正<br>
-        〒670-0955　兵庫県姫路市安田4丁目49-11　Hi2-3F<br>
-        電話 079-226-3714（9:00〜18:00／土日祝を除く）　メール <a href="mailto:info@houseinfo.jp">info@houseinfo.jp</a></dd>
-
-      <dt>2. お預かりする情報</dt>
-      <dd>このページのお申し込みフォームから、会社名・お名前・電話番号・メールアドレス・ご相談内容をお預かりします。</dd>
-
-      <dt>3. 利用目的</dt>
-      <dd>お申し込みいただいた無料相談のご連絡と実施のため、および当社の研修・サービスに関するご案内のために利用します。これ以外の目的には利用しません。</dd>
-
-      <dt>4. 第三者への提供</dt>
-      <dd>ご本人の同意なく第三者へ提供することはありません。ただし、法令に基づいて開示を求められた場合を除きます。</dd>
-
-      <dt>5. 業務の委託</dt>
-      <dd>フォームの送信・記録・メールの送受信に、Google LLC が提供するサービス（Google Apps Script・Google スプレッドシート・Gmail）を利用しています。委託先には必要な範囲でのみ情報を預け、適切に監督します。</dd>
-
-      <dt>6. Cookie などの利用</dt>
-      <dd>ページの利用状況の把握や広告の配信のために、Cookie などを利用する場合があります。Cookie からお名前などの個人を特定できる情報を取得することはありません。ブラウザの設定で Cookie を無効にできます。</dd>
-
-      <dt>7. 安全管理</dt>
-      <dd>お預かりした情報は取り扱う担当者を限定し、紛失・漏えい・改ざんを防ぐよう努めます。</dd>
-
-      <dt>8. 保管期間</dt>
-      <dd>利用目的を終え、保管の必要がなくなった時点で速やかに削除します。</dd>
-
-      <dt>9. 開示・訂正・削除のご請求</dt>
-      <dd>ご本人からのお申し出により、お預かりしている情報の開示・訂正・利用停止・削除に応じます。上記1の連絡先までご連絡ください。</dd>
-
-      <dt>10. 本ポリシーの変更</dt>
-      <dd>内容を変更する場合は、このページに掲載した時点から適用します。</dd>
-    </dl>
-    <p class="pp-date">制定日：2026年9月4日</p>
   </div>
 </section>
 
@@ -445,7 +389,7 @@ body[data-sticky="on"] .sticky.is-visible{ transform:translateY(0); }
     </div>
     <div class="links">
       <a href="https://houseinfo.jp/" target="_blank" rel="noopener">会社サイト</a>
-      <a href="#privacy">プライバシーポリシー</a>
+      <a href="privacy.html">プライバシーポリシー</a>
       <a href="https://houseinfo.jp/tokushoho/" target="_blank" rel="noopener">特定商取引法に基づく表記</a>
     </div>
   </div>
