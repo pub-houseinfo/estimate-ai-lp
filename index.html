@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>見積AIエージェント講座｜初回の見積提出を、その日のうちに。｜ハウスインフォ</title>
+<meta name="description" content="兵庫県の工務店・サブコン（設備／電気／内装）へ。答えるAIではなく、作るAIで見積を作れる人を自社に育てる12時間の講座。まず30分の無料相談から。">
+<meta property="og:title" content="初回の見積提出を、その日のうちに。｜見積AIエージェント講座">
+<meta property="og:description" content="答えるAIではなく、作るAIを。兵庫県の工務店・サブコンへ。見積を作れる人を自社に育てる12時間の講座です。">
+<meta property="og:type" content="website">
+<meta name="robots" content="index,follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;700&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   見積AIエージェント LP v2（HOUSEINFO DESIGN.md 準拠＋GSAP）
+   墨 #1A1A1A／和紙 #F5F4F1／墨タイル #1F1D1A／クレイ #8A6E52／弁柄 #B0472B
+   影・グラデーション・装飾なし。角丸 0px（ボタン・入力 2px）。区切りは余白。
+   太字は大見出し（statement）だけ。本文は 400。
+   v2：ANSWER／BUILD の英字を「地の質感」から「読む見出し（墨色）」へ。動きは GSAP（ScrollTrigger）
+   ========================================================= */
+:root{
+  --ink:#1A1A1A; --ink-hover:#3A342C;
+  --body:#2B2B2B; --muted:#6E6A63; --placeholder:#9B968D; --hairline:#E5E2DC;
+  --white:#FFFFFF; --washi:#F5F4F1; --mist:#FAF9F6;
+  --dark:#1F1D1A; --dark2:#232019; --on-dark:#F5F4F1; --muted-dark:#B9B3A8;
+  --clay:#8A6E52; --clay-dark:#C7A987;
+  --bengara:#B0472B; --bengara-dark:#CE6B45;
+  --caps:'Oswald','Helvetica Neue','Noto Sans JP',sans-serif;
+  --latin:'Inter','Noto Sans JP','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;
+  --jp:'Noto Sans JP','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;
+  --pad:24px;
+  --section:96px;
+  --max:720px;
+}
+@media (min-width:768px){ :root{ --pad:40px; --section:140px; } }
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+@media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto; } }
+body{
+  margin:0; background:var(--washi); color:var(--body);
+  font-family:var(--jp); font-weight:400; font-size:17px; line-height:1.9; letter-spacing:.02em;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+@media (min-width:768px){ body{ font-size:18px; } }
+a{ color:inherit; text-decoration:none; }
+p{ margin:0; }
+h1,h2,h3{ margin:0; font-weight:400; }
+ul{ margin:0; padding:0; list-style:none; }
+button,input,textarea{ font:inherit; color:inherit; }
+
+.wrap{ width:100%; max-width:var(--max); margin:0 auto; padding-left:var(--pad); padding-right:var(--pad); }
+
+/* ---------- 見出しの声 ---------- */
+.eyebrow{
+  font-family:var(--latin); font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+  line-height:1; color:var(--muted); margin:0 0 24px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.eyebrow .jp{ font-family:var(--jp); font-weight:500; letter-spacing:.08em; text-transform:none; font-size:12px; }
+.eyebrow .sep{ width:1px; height:12px; background:currentColor; opacity:.5; }
+.on-dark .eyebrow{ color:var(--clay-dark); }
+.on-light .eyebrow,.on-washi .eyebrow{ color:var(--clay); }
+
+.caps{ font-family:var(--caps); font-weight:500; text-transform:uppercase; line-height:1; letter-spacing:.01em; }
+.statement{                      /* Mode B：大見出しだけ太字を許す */
+  font-family:var(--jp); font-weight:700; letter-spacing:.04em; color:var(--ink);
+  font-size:30px; line-height:1.45;
+}
+.on-dark .statement{ color:var(--on-dark); }
+.h2{
+  font-family:var(--jp); font-weight:500; letter-spacing:.03em; color:var(--ink);
+  font-size:24px; line-height:1.55;
+}
+@media (min-width:768px){ .h2{ font-size:32px; line-height:1.5; } }
+.on-dark .h2{ color:var(--on-dark); }
+.line{ display:block; }          /* 行ごとのマスク演出用 */
+.lead{ color:var(--body); }
+.on-dark .lead{ color:var(--on-dark); }
+.lines{ display:grid; gap:.6em; }   /* 1文＝1行として並べる */
+
+/* ---------- ボタン ---------- */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:14px;
+  min-height:60px; padding:18px 34px; border:0; border-radius:2px; cursor:pointer;
+  font-family:var(--jp); font-weight:500; font-size:17px; letter-spacing:.06em; line-height:1.2;
+  background:var(--ink); color:var(--white);
+  transition:background-color .4s ease, color .4s ease;
+  width:100%;
+}
+.btn .arrow{ font-family:var(--latin); font-weight:600; transition:transform .4s ease; }
+.btn:hover{ background:var(--ink-hover); }
+.btn:hover .arrow{ transform:translateX(4px); }
+.btn[disabled]{ opacity:.6; cursor:default; }
+.on-dark .btn{ background:var(--on-dark); color:var(--ink); }
+.on-dark .btn:hover{ background:var(--white); }
+@media (min-width:600px){ .btn{ width:auto; min-width:320px; } }
+
+/* ---------- ヘッダー ---------- */
+.header{ position:absolute; top:0; left:0; right:0; z-index:5; height:72px; display:flex; align-items:center; }
+.header .wrap{ display:flex; align-items:center; justify-content:space-between; max-width:1120px; }
+.wordmark{ font-family:var(--caps); font-weight:500; font-size:20px; letter-spacing:.18em; color:var(--on-dark); line-height:1; }
+.wordmark small{ display:block; font-family:var(--jp); font-weight:400; font-size:10px; letter-spacing:.12em; color:var(--muted-dark); margin-top:6px; }
+.header .nav-cta{ font-family:var(--latin); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--on-dark); border-bottom:1px solid rgba(245,244,241,.5); padding-bottom:4px; }
+.header .nav-cta:hover{ border-color:var(--clay-dark); }
+
+/* ---------- セクション共通 ---------- */
+.sec{ padding-top:var(--section); padding-bottom:var(--section); position:relative; }
+.on-dark{ background:var(--dark); color:var(--on-dark); }
+.on-light{ background:var(--white); color:var(--body); }
+.on-washi{ background:var(--washi); color:var(--body); }
+
+/* ---------- 01 ファーストビュー ---------- */
+.hero{ min-height:100svh; display:flex; align-items:flex-end; overflow:hidden; padding-top:120px; padding-bottom:64px; }
+@media (min-width:768px){ .hero{ align-items:center; padding-top:160px; padding-bottom:120px; } }
+.hero .wrap{ max-width:1120px; position:relative; z-index:2; }
+.hero .bg-caps{
+  position:absolute; left:var(--pad); right:0; top:88px;
+  font-family:var(--caps); font-weight:600; text-transform:uppercase; line-height:.9; letter-spacing:.01em;
+  color:#3A352E; font-size:clamp(120px, 34vw, 380px); white-space:nowrap; pointer-events:none; user-select:none; z-index:1;
+}
+.hero .eyebrow{ margin-bottom:28px; }
+.hero .statement{ font-size:34px; line-height:1.4; }
+@media (min-width:480px){ .hero .statement{ font-size:40px; } }
+@media (min-width:768px){ .hero .statement{ font-size:56px; line-height:1.35; } }
+@media (min-width:1024px){ .hero .statement{ font-size:64px; } }
+.hero .sub{ margin-top:32px; display:grid; gap:.3em; color:var(--muted-dark); font-size:16px; max-width:34em; }
+@media (min-width:768px){ .hero .sub{ font-size:19px; margin-top:40px; } }
+.hero .sub .first{ color:var(--on-dark); font-weight:500; font-size:1.12em; letter-spacing:.06em; }
+.hero .sub .tool b{ font-family:var(--latin); font-weight:600; color:var(--on-dark); letter-spacing:.01em; }
+.hero .cta{ margin-top:44px; }
+@media (min-width:768px){ .hero .cta{ margin-top:56px; } }
+.hero .cta-note{ margin-top:16px; font-size:13px; color:var(--muted-dark); letter-spacing:.03em; }
+
+/* ---------- 02 共感（答えるAI）／ 03 解決（作るAI） ---------- */
+.contrast-label{                 /* v2：読む見出し（Mode A 英字ディスプレイ）。墨色で立てる */
+  font-family:var(--caps); font-weight:500; text-transform:uppercase; letter-spacing:.02em; line-height:1;
+  font-size:64px; color:var(--ink); margin-bottom:32px;
+}
+@media (min-width:768px){ .contrast-label{ font-size:104px; margin-bottom:40px; } }
+.on-dark .contrast-label{ color:var(--on-dark); }
+.contrast-label span{ display:inline-block; }
+.sec-empathy .h2{ margin-bottom:40px; }
+.sec-empathy .lines p{ padding-left:20px; position:relative; }
+.sec-empathy .lines p::before{ content:""; position:absolute; left:0; top:.95em; width:8px; height:1px; background:var(--clay); }
+
+.sec-solve .h2{ margin-bottom:40px; }
+.sec-solve .h2 b{ font-family:var(--latin); font-weight:600; letter-spacing:.01em; }
+.sec-solve .speaker{ margin-top:56px; padding-top:40px; border-top:1px solid rgba(245,244,241,.16); }
+.sec-solve .who{ margin-top:28px; font-size:13px; letter-spacing:.06em; color:var(--muted-dark); }
+.sec-solve .who .caps{ font-size:13px; color:var(--clay-dark); margin-right:12px; letter-spacing:.14em; }
+
+/* ---------- 04 持ち帰るもの ---------- */
+.sec-take .h2{ margin-bottom:56px; }
+.take-list{ display:grid; gap:40px; }
+@media (min-width:768px){ .take-list{ gap:48px; } }
+.take-item{ display:grid; grid-template-columns:52px 1fr; gap:16px; align-items:start; }
+@media (min-width:768px){ .take-item{ grid-template-columns:72px 1fr; gap:24px; } }
+.take-item .num{ font-family:var(--caps); font-weight:500; font-size:40px; line-height:1; color:var(--clay); letter-spacing:.02em; padding-top:2px; }
+@media (min-width:768px){ .take-item .num{ font-size:52px; } }
+.take-item .name{ font-family:var(--jp); font-weight:500; font-size:20px; letter-spacing:.03em; color:var(--ink); line-height:1.5; }
+@media (min-width:768px){ .take-item .name{ font-size:24px; } }
+.take-item .desc{ margin-top:8px; color:var(--body); }
+.sec-take .close{ margin-top:72px; padding-top:40px; border-top:1px solid var(--hairline); }
+.sec-take .close .big{ font-family:var(--caps); font-weight:500; font-size:64px; line-height:1; color:var(--ink); letter-spacing:.01em; }
+@media (min-width:768px){ .sec-take .close .big{ font-size:88px; } }
+.sec-take .close .big small{ font-family:var(--jp); font-weight:400; font-size:.3em; letter-spacing:.08em; color:var(--muted); margin-left:.3em; }
+.sec-take .close p{ margin-top:16px; color:var(--body); }
+
+/* ---------- 05 フォーム ---------- */
+.sec-form .h2{ margin-bottom:32px; }
+.sec-form .intro{ margin-bottom:56px; }
+.form{ display:grid; gap:28px; }
+.field{ display:grid; gap:10px; }
+.field label{ font-size:14px; letter-spacing:.06em; color:var(--ink); font-weight:500; display:flex; align-items:baseline; gap:10px; }
+.field label .req{ font-family:var(--latin); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--bengara); font-weight:600; }
+.field label .opt{ font-family:var(--latin); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); font-weight:500; }
+.field input,.field textarea{
+  width:100%; min-height:56px; padding:14px 18px; border:1px solid var(--hairline); border-radius:2px;
+  background:var(--white); color:var(--ink); font-size:17px; line-height:1.6; letter-spacing:.02em; outline:none;
+  transition:border-color .3s ease;
+}
+.field textarea{ min-height:150px; resize:vertical; }
+.field input::placeholder,.field textarea::placeholder{ color:var(--placeholder); }
+.field input:focus,.field textarea:focus{ border-color:var(--ink); }
+.form .submit{ margin-top:12px; }
+.form .fine{ margin-top:18px; font-size:12px; line-height:1.7; letter-spacing:.02em; color:var(--muted); }
+.form .status{ margin-top:16px; font-size:14px; line-height:1.7; color:var(--bengara); min-height:1.7em; }
+.hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
+/* ---------- フッター ---------- */
+.footer{ background:var(--washi); color:var(--muted); padding:56px 0; font-size:12px; letter-spacing:.03em; line-height:1.8; }
+.footer .wrap{ max-width:1120px; display:grid; gap:20px; }
+@media (min-width:768px){ .footer .wrap{ grid-template-columns:1fr auto; align-items:end; } }
+.footer .wordmark{ color:var(--ink); margin-bottom:12px; }
+.footer .wordmark small{ color:var(--muted); }
+.footer address{ font-style:normal; }
+.footer a{ color:var(--ink); border-bottom:1px solid var(--hairline); }
+.footer a:hover{ border-color:var(--clay); }
+.footer .links{ display:flex; gap:20px; flex-wrap:wrap; }
+body[data-sticky="on"] .footer{ padding-bottom:calc(56px + 84px); }
+@media (min-width:768px){ body[data-sticky="on"] .footer{ padding-bottom:56px; } }
+
+/* ---------- 追従CTA（SPのみ・1本） ---------- */
+.sticky{
+  position:fixed; left:0; right:0; bottom:0; z-index:20;
+  padding:12px var(--pad) calc(12px + env(safe-area-inset-bottom));
+  background:rgba(245,244,241,.94); border-top:1px solid var(--hairline);
+  transform:translateY(110%); transition:transform .4s ease;
+}
+.sticky .btn{ min-height:54px; padding:14px 24px; font-size:16px; }
+body[data-sticky="on"] .sticky.is-visible{ transform:translateY(0); }
+@media (min-width:768px){ .sticky{ display:none; } }
+@media (prefers-reduced-motion:reduce){ .sticky{ transition:none; } .btn .arrow{ transition:none; } }
+</style>
+</head>
+<body data-sticky="on">
+
+<!-- ===== ヘッダー（最小） ===== -->
+<header class="header">
+  <div class="wrap">
+    <a class="wordmark" href="https://houseinfo.jp/" aria-label="ハウスインフォ">HOUSEINFO<small>株式会社ハウスインフォ</small></a>
+    <a class="nav-cta" href="#form">Free consultation</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ===== 01 ファーストビュー（PREP：結論先出し） ===== -->
+<section class="sec hero on-dark" id="top">
+  <div class="bg-caps" aria-hidden="true">SAME<br>DAY</div>
+  <div class="wrap">
+    <p class="eyebrow"><span>Estimate AI Agent</span><span class="sep"></span><span class="jp">建設業向け・見積AIエージェント講座</span></p>
+    <h1 class="statement"><span class="line">初回の見積提出を、</span><span class="line">その日のうちに。</span></h1>
+    <div class="sub">
+      <p class="first">答えるAIではなく、作るAIを。</p>
+      <p>兵庫県の工務店・サブコン（設備／電気／内装）へ。</p>
+      <p class="tool">ChatGPTではなく<b>Claude Code</b>で、見積を作れる人を自社に育てる12時間の講座です。</p>
+    </div>
+    <div class="cta">
+      <a class="btn" href="#form">30分の無料相談を申し込む <span class="arrow">→</span></a>
+      <p class="cta-note">オンラインまたは姫路市内で対面。売り込みはしません。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 02 共感（Q：答えるAIの側） ===== -->
+<section class="sec sec-empathy on-light">
+  <div class="wrap">
+    <p class="eyebrow"><span>AI that answers</span><span class="sep"></span><span class="jp">答えるAI</span></p>
+    <div class="contrast-label" aria-hidden="true">ANSWER</div>
+    <h2 class="h2"><span class="line">チャットAIは、質問すれば答えてくれる。</span><span class="line">でも、作るのは質問した人です。</span></h2>
+    <div class="lines lead">
+      <p>元請からの依頼が重なれば、見積は夜と休日に押し出される。</p>
+      <p>単価も歩掛も社長の頭の中にあり、他の人が代われない。</p>
+      <p>そして出した見積の半分は、受注につながらない。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 解決と語り手（U/E：作るAIの側＝背景反転） ===== -->
+<section class="sec sec-solve on-dark">
+  <div class="wrap">
+    <p class="eyebrow"><span>AI that builds</span><span class="sep"></span><span class="jp">作るAI</span></p>
+    <div class="contrast-label" aria-hidden="true">BUILD</div>
+    <h2 class="h2"><span class="line"><b>Claude Code</b>は、</span><span class="line">答えを返すAIではありません。</span></h2>
+    <div class="lines lead">
+      <p>自社のPCの中で、単価表もExcelも自分で開いて、見積を組み上げます。</p>
+      <p>図面も単価も外に出ません。金額の最終確認は、これまで通り人が行います。</p>
+    </div>
+    <div class="speaker">
+      <div class="lines lead">
+        <p>私も見積を出す側の人間です。姫路で宿泊施設と建築の会社をやっています。</p>
+        <p>売るのはソフトではなく、それを自社で回せる人です。</p>
+      </div>
+      <p class="who"><span class="caps">Houseinfo</span>株式会社ハウスインフォ　福永義正</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 04 持ち帰るもの（S：成果） ===== -->
+<section class="sec sec-take on-washi">
+  <div class="wrap">
+    <p class="eyebrow"><span>What you take home</span><span class="sep"></span><span class="jp">持ち帰るもの</span></p>
+    <h2 class="h2"><span class="line">講座が終わった翌日から、使えます。</span></h2>
+    <ul class="take-list">
+      <li class="take-item">
+        <span class="num" aria-hidden="true">01</span>
+        <div>
+          <p class="name">自社の単価マスタ</p>
+          <p class="desc">過去の見積から、自社の数字で組み上げます。</p>
+        </div>
+      </li>
+      <li class="take-item">
+        <span class="num" aria-hidden="true">02</span>
+        <div>
+          <p class="name">自社の見積雛形</p>
+          <p class="desc">他社のテンプレートではありません。</p>
+        </div>
+      </li>
+      <li class="take-item">
+        <span class="num" aria-hidden="true">03</span>
+        <div>
+          <p class="name">実案件の見積1本</p>
+          <p class="desc">演習ではなく、持参した自案件で出し切ります。</p>
+        </div>
+      </li>
+    </ul>
+    <div class="close">
+      <p class="big"><span class="count" data-to="12">12</span><small>時間</small></p>
+      <p>座学ではなく、手を動かす講座です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 05 フォーム（T：行動） ===== -->
+<section class="sec sec-form on-light" id="form">
+  <div class="wrap">
+    <p class="eyebrow"><span>Free consultation</span><span class="sep"></span><span class="jp">30分の無料相談</span></p>
+    <h2 class="h2"><span class="line">まず、30分お話しさせてください。</span></h2>
+    <div class="intro lines lead">
+      <p>過去の見積を3件お持ちいただければ、今どれだけ時間がかかっているかをその場で測ります。</p>
+      <p>売り込みはしません。合わないと判断すればそう申し上げます。</p>
+    </div>
+
+    <!--
+      送信先（Apps Script ウェブアプリ）：data-endpoint。fukunaga@ / t.fukunaga@ の両方へ通知＋台帳へ記録。
+      送信後の移動先：data-thanks（公開時に thanks.html へ差し替える）。
+      data-endpoint を空にすると通常のPOST（Netlify Forms）に切り替わる。
+    -->
+    <form class="form" id="consult" name="consult" method="POST" action="thanks.html"
+          data-endpoint="https://script.google.com/macros/s/AKfycby8JLnOl-SXhtfJlFrNQPMbV5vbYgc1iiSUFeImUPhlPZp96fYTj2M54Q8ZupwEOXntCg/exec"
+          data-thanks="thanks.html"
+          data-netlify="true" netlify-honeypot="bot-field" novalidate>
+      <input type="hidden" name="form-name" value="consult">
+      <p class="hp"><label>このフィールドは空のままにしてください <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+
+      <div class="field">
+        <label for="company">会社名 <span class="req">Required</span></label>
+        <input id="company" name="company" type="text" required autocomplete="organization" placeholder="株式会社○○">
+      </div>
+      <div class="field">
+        <label for="name">お名前 <span class="req">Required</span></label>
+        <input id="name" name="name" type="text" required autocomplete="name" placeholder="姓　名">
+      </div>
+      <div class="field">
+        <label for="tel">電話番号 <span class="req">Required</span></label>
+        <input id="tel" name="tel" type="tel" required autocomplete="tel" inputmode="tel" placeholder="079-000-0000">
+      </div>
+      <div class="field">
+        <label for="email">メールアドレス <span class="req">Required</span></label>
+        <input id="email" name="email" type="email" required autocomplete="email" inputmode="email" placeholder="name@example.co.jp">
+      </div>
+      <div class="field">
+        <label for="message">ご相談内容 <span class="opt">Optional</span></label>
+        <textarea id="message" name="message" placeholder="例）月に何本くらい見積を出しているか、いま困っていること など"></textarea>
+      </div>
+
+      <div class="submit">
+        <button class="btn" type="submit" id="submitBtn">30分の無料相談を申し込む <span class="arrow">→</span></button>
+        <p class="status" id="formStatus" role="status" aria-live="polite"></p>
+        <p class="fine">いただいた内容は、ご相談のご連絡にのみ使います。<br>株式会社ハウスインフォ（兵庫県姫路市）</p>
+      </div>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== フッター ===== -->
+<footer class="footer">
+  <div class="wrap">
+    <div>
+      <p class="wordmark">HOUSEINFO<small>株式会社ハウスインフォ</small></p>
+      <address>兵庫県姫路市｜宿泊事業・建築事業・IT事業</address>
+    </div>
+    <div class="links">
+      <a href="https://houseinfo.jp/" target="_blank" rel="noopener">会社サイト</a>
+      <a href="https://houseinfo.jp/tokushoho/" target="_blank" rel="noopener">特定商取引法に基づく表記</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== 追従CTA（SPのみ・1本。不要なら <body data-sticky="off"> にする） ===== -->
+<div class="sticky" id="sticky" aria-hidden="true">
+  <a class="btn" href="#form">30分の無料相談を申し込む <span class="arrow">→</span></a>
+</div>
+
+<!-- GSAP（cdnjs） -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  // ---------------- 追従CTA：FVを過ぎたら出す。フォームが見えたら隠す ----------------
+  var sticky=document.getElementById('sticky'), hero=document.getElementById('top'), formSec=document.getElementById('form');
+  if(sticky && hero && formSec && 'IntersectionObserver' in window){
+    var heroOut=false, formIn=false;
+    function update(){ var show=heroOut && !formIn; sticky.classList.toggle('is-visible',show); sticky.setAttribute('aria-hidden',show?'false':'true'); }
+    new IntersectionObserver(function(es){heroOut=!es[0].isIntersecting;update();},{threshold:0.05}).observe(hero);
+    new IntersectionObserver(function(es){formIn=es[0].isIntersecting;update();},{threshold:0.05}).observe(formSec);
+  }
+
+  // ---------------- フォーム送信（Apps Script へ fetch → 完了ページへ） ----------------
+  var form=document.getElementById('consult');
+  if(form){
+    var endpoint=(form.getAttribute('data-endpoint')||'').trim();
+    var btn=document.getElementById('submitBtn'), status=document.getElementById('formStatus');
+    var btnHtml=btn.innerHTML;
+    var labels={company:'会社名',name:'お名前',tel:'電話番号',email:'メールアドレス'};
+    form.addEventListener('submit',function(ev){
+      if(!endpoint) return;                     // 送信先が無ければ通常POST（Netlify Forms）
+      ev.preventDefault();
+      status.textContent='';
+      // 必須チェック（novalidate なので自前で。ブラウザ既定の吹き出しより文言を揃える）
+      var missing=[];
+      Object.keys(labels).forEach(function(k){ var el=form.elements[k]; if(el && !el.value.trim()) missing.push(labels[k]); });
+      var emailEl=form.elements.email;
+      if(emailEl && emailEl.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())){ missing.push('メールアドレスの形式'); }
+      if(missing.length){ status.textContent=missing.join('・')+' をご確認ください。'; var first=form.querySelector(':invalid, [required]:placeholder-shown'); if(first) first.focus(); return; }
+
+      var data={};
+      ['company','name','tel','email','message','bot-field'].forEach(function(k){ var el=form.elements[k]; data[k]=el?el.value.trim():''; });
+      data.page=location.href; data.referrer=document.referrer||''; data.ua=navigator.userAgent;
+
+      btn.disabled=true; btn.innerHTML='送信しています…';
+      fetch(endpoint,{method:'POST',body:JSON.stringify(data)})   // text/plain で送る（Apps Script のCORS要件）
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          if(res && res.ok){ location.href=form.getAttribute('data-thanks')||form.getAttribute('action')||'thanks.html'; return; }
+          throw new Error((res && res.message)||'送信に失敗しました。');
+        })
+        .catch(function(err){
+          btn.disabled=false; btn.innerHTML=btnHtml;
+          var msg=(err && err.message)||'';
+          if(!msg || err instanceof TypeError || /fetch|network|JSON|token/i.test(msg)) msg='送信に失敗しました。時間をおいて再度お試しいただくか、お電話でご連絡ください。';
+          status.textContent=msg;
+        });
+    });
+  }
+
+  // ---------------- GSAP：登場の演出（控えめ・墨と余白の世界を壊さない） ----------------
+  if(!window.gsap || !window.ScrollTrigger) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  function ST(trigger,start){ return {trigger:trigger, start:start||'top 78%', once:true}; }
+  // 行を下からマスク越しに出す（line-reveal）
+  function revealLines(lines,vars){
+    var inners=[];
+    lines.forEach(function(el){
+      if(el.dataset.lr) { inners.push(el.firstChild); return; }
+      el.dataset.lr='1'; el.style.overflow='hidden'; el.style.display='block';
+      var inner=document.createElement('span'); inner.style.display='block';
+      while(el.firstChild) inner.appendChild(el.firstChild); el.appendChild(inner); inners.push(inner);
+    });
+    return gsap.from(inners, Object.assign({yPercent:115, duration:.9, ease:'power3.out', stagger:.12}, vars||{}));
+  }
+  // 1文字ずつ span に割る（英字ディスプレイ用）
+  function splitChars(el){
+    var t=el.textContent; el.textContent='';
+    return t.split('').map(function(c){ var s=document.createElement('span'); s.textContent=(c===' ')?' ':c; el.appendChild(s); return s; });
+  }
+  var q=function(sel,root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); };
+
+  // --- 01 FV：読み込み時に一度だけ（上から順に、ゆっくり） ---
+  var tl=gsap.timeline({defaults:{ease:'power3.out'}, delay:.15});
+  tl.from('.hero .eyebrow',{opacity:0,y:12,duration:.7})
+    .add(revealLines(q('.hero .statement .line')),'-=.35')
+    .from('.hero .sub p',{opacity:0,y:18,duration:.7,stagger:.12},'-=.45')
+    .from('.hero .cta > *',{opacity:0,y:14,duration:.7,stagger:.12},'-=.35')
+    .from('.header .wrap > *',{opacity:0,y:-8,duration:.6,stagger:.1},'-=.6');
+  gsap.from('.hero .bg-caps',{opacity:0,y:30,duration:1.8,ease:'power1.out'});
+  // 背景の大英字だけ、スクロールでゆっくり沈む（視差）
+  gsap.to('.hero .bg-caps',{yPercent:30, ease:'none', scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true}});
+
+  // --- 02〜05：スクロールで、各セクションが上から順に立ち上がる ---
+  q('.sec:not(.hero)').forEach(function(sec){
+    var eyebrow=sec.querySelector('.eyebrow');
+    if(eyebrow) gsap.from(eyebrow,{opacity:0,y:10,duration:.7,ease:'power2.out',scrollTrigger:ST(sec,'top 75%')});
+
+    var label=sec.querySelector('.contrast-label');       // ANSWER／BUILD：1文字ずつ下から
+    if(label){ var chars=splitChars(label); gsap.from(chars,{opacity:0,yPercent:60,duration:.7,ease:'power3.out',stagger:.045,scrollTrigger:ST(sec,'top 75%')}); }
+
+    var h2lines=q('.h2 .line',sec);                       // 見出し：行ごとにマスクから
+    if(h2lines.length) revealLines(h2lines,{scrollTrigger:ST(sec,'top 70%'), stagger:.14});
+
+    q('.lines',sec).forEach(function(grp){                // 本文：1文ずつ順番に
+      gsap.from(grp.children,{opacity:0,y:22,duration:.75,ease:'power2.out',stagger:.14,scrollTrigger:ST(grp,'top 85%')});
+    });
+    var who=sec.querySelector('.who'); if(who) gsap.from(who,{opacity:0,duration:.9,ease:'power1.out',scrollTrigger:ST(who,'top 90%')});
+  });
+
+  // --- 03 作るAI：境目の線が左から引かれる ---
+  var spk=document.querySelector('.sec-solve .speaker');
+  if(spk){ gsap.from(spk,{'--w':'0%'}); gsap.fromTo(spk,{borderImageSource:'none'},{}); // 予約（線は下の方法で描く）
+    spk.style.borderTop='0'; var line=document.createElement('span');
+    line.style.cssText='display:block;height:1px;background:rgba(245,244,241,.16);transform-origin:left;margin-bottom:40px;';
+    spk.style.paddingTop='0'; spk.insertBefore(line,spk.firstChild);
+    gsap.from(line,{scaleX:0,duration:1.1,ease:'power3.inOut',scrollTrigger:ST(spk,'top 88%')});
+  }
+
+  // --- 04 持ち帰るもの：3点が順に／12がカウントアップ ---
+  gsap.from('.take-item',{opacity:0,y:28,duration:.7,ease:'power2.out',stagger:.16,scrollTrigger:ST('.take-list','top 82%')});
+  gsap.from('.take-item .num',{xPercent:-20,duration:.9,ease:'power3.out',stagger:.16,scrollTrigger:ST('.take-list','top 82%')});
+  var cl=document.querySelector('.sec-take .close');
+  if(cl){
+    var hair=document.createElement('span'); hair.style.cssText='display:block;height:1px;background:#E5E2DC;transform-origin:left;margin-bottom:40px;';
+    cl.style.borderTop='0'; cl.style.paddingTop='0'; cl.insertBefore(hair,cl.firstChild);
+    gsap.from(hair,{scaleX:0,duration:1.1,ease:'power3.inOut',scrollTrigger:ST(cl,'top 85%')});
+    var cnt=cl.querySelector('.count');
+    if(cnt){ var to=parseInt(cnt.getAttribute('data-to'),10)||12, o={v:0};
+      gsap.to(o,{v:to,duration:1.4,ease:'power2.out',scrollTrigger:ST(cl,'top 85%'),onUpdate:function(){ cnt.textContent=Math.round(o.v); }}); }
+    gsap.from(q('.close > p',cl),{opacity:0,y:16,duration:.8,ease:'power2.out',stagger:.15,scrollTrigger:ST(cl,'top 85%')});
+  }
+
+  // --- 05 フォーム：入力欄が順に ---
+  gsap.from('.form .field, .form .submit',{opacity:0,y:20,duration:.6,ease:'power2.out',stagger:.09,scrollTrigger:ST('.form','top 85%')});
+
+  // --- フッター ---
+  gsap.from('.footer .wrap > *',{opacity:0,y:12,duration:.8,ease:'power1.out',stagger:.1,scrollTrigger:ST('.footer','top 95%')});
+})();
+</script>
+</body>
+</html>
